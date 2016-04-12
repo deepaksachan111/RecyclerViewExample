@@ -1,9 +1,8 @@
 package com.quaere.noida.recyclerviewexample;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -13,23 +12,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
 
     private MyRecyclerAdapter adapter;
+    ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            setProgressBarIndeterminateVisibility(true);
+
+            pDialog = new ProgressDialog(MainActivity.this);
+           pDialog.setTitle("Loading");
+            pDialog.show();
+           // setProgressBarIndeterminateVisibility(true);
         }
 
         @Override
@@ -109,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Integer result) {
 
-            setProgressBarIndeterminateVisibility(false);
+           // setProgressBarIndeterminateVisibility(false);
+            pDialog.dismiss();
 
             /* Download complete. Lets update UI */
             if (result == 1) {
