@@ -6,6 +6,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -32,14 +33,23 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<FeedListRowHolder> {
     }
 
     @Override
-    public void onBindViewHolder(FeedListRowHolder feedListRowHolder, int i) {
-        FeedItem feedItem = feedItemList.get(i);
+    public void onBindViewHolder(FeedListRowHolder feedListRowHolder, final int i) {
+        final FeedItem feedItem = feedItemList.get(i);
 
         Picasso.with(mContext).load(feedItem.getThumbnail())
                 .error(R.drawable.placeholder)
                 .placeholder(R.drawable.placeholder)
                 .into(feedListRowHolder.thumbnail);
+           feedListRowHolder.thumbnail.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   FeedItem ff = (FeedItem)feedItemList.get(i);
+                   String s = ff.getTitle();
 
+                   Toast.makeText(v.getContext(), "Position: "+ s, Toast.LENGTH_LONG).show();
+
+               }
+           });
         feedListRowHolder.title.setText(Html.fromHtml(feedItem.getTitle()));
     }
 
