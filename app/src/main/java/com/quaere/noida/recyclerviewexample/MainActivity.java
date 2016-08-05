@@ -14,6 +14,7 @@ import java.util.List;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -116,6 +117,10 @@ public class MainActivity extends AppCompatActivity {
             /* Download complete. Lets update UI */
             if (result == 1) {
                 adapter = new MyRecyclerAdapter(MainActivity.this, feedItemList);
+                 List<FeedItem> feedItemList2 = new ArrayList<FeedItem>();
+                feedItemList2 = feedItemList;
+                feedItemList2 = feedItemList;
+
                 mRecyclerView.setAdapter(adapter);
             } else {
                 Log.e(TAG, "Failed to fetch data!");
@@ -124,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void parseResult(String result) {
+
         try {
             JSONObject response = new JSONObject(result);
             JSONArray posts = response.optJSONArray("posts");
@@ -137,10 +143,35 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject post = posts.optJSONObject(i);
 
                 FeedItem item = new FeedItem();
-                item.setTitle(post.optString("title"));
+                //item.setTitle(post.optString("title"));
+
+                // String id = jsonObject_cate.getString("id");
+
+                //String title = jsonObject_cate.getString("title");
+               // String description = jsonObject_cate.getString("description");
+                JSONArray jsonArray_attachment = post.getJSONArray("attachments");
+
+
+                for (int k = 0; k < jsonArray_attachment.length(); k++) {
+
+                    JSONObject jsonObject_cate = jsonArray_attachment.getJSONObject(k);
+
+                    String description = jsonObject_cate.getString("description");
+
+                    if(description.equals("") ){
+
+                        item.setTitle("Unavaliabe");
+                    }else {
+                        item.setTitle(description);
+                    }
+
+
+                }
                 item.setThumbnail(post.optString("thumbnail"));
                 feedItemList.add(item);
             }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

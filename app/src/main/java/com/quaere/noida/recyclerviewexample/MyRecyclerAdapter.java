@@ -50,7 +50,14 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<FeedListRowHolder> {
 
                }
            });
-        feedListRowHolder.title.setText(Html.fromHtml(feedItem.getTitle()));
+
+
+        if(feedItem.getTitle()== null){
+
+            feedListRowHolder.title.setText("NULL");
+        }else {
+            feedListRowHolder.title.setText(Html.fromHtml(feedItem.getTitle()));
+        }
     }
 
     @Override
