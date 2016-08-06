@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.AsyncTask;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Initialize recyclerview */
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
 
 
 
@@ -155,11 +156,9 @@ public class MainActivity extends AppCompatActivity {
                 for (int k = 0; k < jsonArray_attachment.length(); k++) {
 
                     JSONObject jsonObject_cate = jsonArray_attachment.getJSONObject(k);
-
                     String description = jsonObject_cate.getString("description");
 
                     if(description.equals("") ){
-
                         item.setTitle("Unavaliabe");
                     }else {
                         item.setTitle(description);

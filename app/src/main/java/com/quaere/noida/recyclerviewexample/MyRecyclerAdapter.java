@@ -6,13 +6,15 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MyRecyclerAdapter extends RecyclerView.Adapter<FeedListRowHolder> {
+public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.MyViewHolder> {
 
 
     private List<FeedItem> feedItemList;
@@ -24,23 +26,35 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<FeedListRowHolder> {
         this.mContext = context;
     }
 
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        protected ImageView thumbnail;
+        protected TextView title;
+
+        public MyViewHolder(View view) {
+            super(view);
+            this.thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            this.title = (TextView) view.findViewById(R.id.title);
+        }
+
+    }
     @Override
-    public FeedListRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_row, null);
-        FeedListRowHolder mh = new FeedListRowHolder(v);
+        MyViewHolder mh = new MyViewHolder(v);
 
         return mh;
     }
 
     @Override
-    public void onBindViewHolder(FeedListRowHolder feedListRowHolder, final int i) {
+    public void onBindViewHolder(MyViewHolder viewHolder, final int i) {
         final FeedItem feedItem = feedItemList.get(i);
 
         Picasso.with(mContext).load(feedItem.getThumbnail())
                 .error(R.drawable.placeholder)
                 .placeholder(R.drawable.placeholder)
-                .into(feedListRowHolder.thumbnail);
-           feedListRowHolder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                .into(viewHolder.thumbnail);
+           viewHolder.thumbnail.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                    FeedItem ff = (FeedItem)feedItemList.get(i);
@@ -54,9 +68,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<FeedListRowHolder> {
 
         if(feedItem.getTitle()== null){
 
-            feedListRowHolder.title.setText("NULL");
+            viewHolder.title.setText("NULL");
         }else {
-            feedListRowHolder.title.setText(Html.fromHtml(feedItem.getTitle()));
+            viewHolder.title.setText(Html.fromHtml(feedItem.getTitle()));
         }
     }
 
